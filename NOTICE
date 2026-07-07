@@ -1,0 +1,7 @@
+dimcode-plugin-cc
+Copyright 2026 Li Xuan
+
+This product's command and skill prompt structure is adapted from
+codex-plugin-cc (https://github.com/openai/codex-plugin-cc),
+Copyright 2026 OpenAI, licensed under the Apache License, Version 2.0.
+No source code from codex-plugin-cc is included.
