@@ -1,6 +1,6 @@
 {
   "name": "dimcode",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Use DimCode from Claude Code to review code or delegate tasks.",
   "author": {
     "name": "Li Xuan"

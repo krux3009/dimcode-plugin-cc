@@ -34,10 +34,9 @@ Execution mode rules:
   - `Run in background`
 
 Running the review:
-- From the repository root, invoke dimcode with the review brief on stdin (quoted heredoc, per the `dimcode-cli-runtime` skill). Fill in the scope line from the rules above:
+- Write the review brief below to a temp file with the `Write` tool (dimcode only accepts stdin from a pipe — heredocs and `< file` redirects fail with `Error: stdin is empty`). Fill in the scope line from the rules above:
 
-```bash
-dimcode exec <<'DIMCODE_REVIEW'
+```
 You are acting as a strict senior code reviewer. This is a READ-ONLY review: do not modify, create, or delete any files.
 
 Review scope: <working tree (staged + unstaged + untracked) | diff of <base>...HEAD>.
@@ -47,7 +46,12 @@ Report:
 - Findings ordered by severity (critical, major, minor), each with file path and line number, a one-sentence defect statement, and a concrete failure scenario.
 - Only real issues: correctness bugs, security problems, data loss, broken edge cases. Skip style nits unless they change behavior.
 - If there are no findings, say so explicitly and note any residual risk in one or two lines.
-DIMCODE_REVIEW
+```
+
+- Then, from the repository root, pipe it in:
+
+```bash
+cat /path/to/review-brief.txt | dimcode exec
 ```
 
 Foreground flow:
@@ -56,6 +60,6 @@ Foreground flow:
 - Do not fix any issues mentioned in the review output.
 
 Background flow:
-- Launch the same command with `Bash` and `run_in_background: true`, description "DimCode review".
+- Launch the same `cat ... | dimcode exec` command with `Bash` and `run_in_background: true`, description "DimCode review".
 - Do not wait for completion in this turn.
 - After launching, tell the user: "DimCode review started in the background. Check `/dimcode:status` for progress and `/dimcode:result` when it finishes."

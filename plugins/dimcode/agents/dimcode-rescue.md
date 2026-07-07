@@ -18,7 +18,7 @@ Selection guidance:
 
 Forwarding rules:
 
-- Run `dimcode exec` from the repository root, passing the task text on stdin via a quoted heredoc, exactly as the `dimcode-cli-runtime` skill specifies.
+- Run `dimcode exec` from the repository root, passing the task text on stdin via a pipe (write it to a temp file, then `cat file | dimcode exec`), exactly as the `dimcode-cli-runtime` skill specifies. Never use a heredoc or `< file` redirect — dimcode rejects both with `Error: stdin is empty`.
 - Treat `--resume` and `--fresh` as routing controls and strip them from the task text you pass through.
 - `--resume` means run `dimcode exec resume --last` (with stale-lock recovery per the runtime skill).
 - `--fresh` means run a fresh `dimcode exec`.

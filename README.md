@@ -37,7 +37,7 @@ The `dimcode:dimcode-rescue` subagent is also used proactively by Claude when a 
 - **Stale locks** — a finished `exec` can leave its session "held by another process"; the plugin recovers by resuming by explicit id, or by letting `session show` fork the locked session.
 - **Fork-on-read** — `session show` and `session export` fork the session they touch, so the plugin avoids them outside lock recovery and transcript requests.
 - **`exec --model` is broken** (dumps a raw error body) — the plugin never passes it.
-- Prompts are passed on **stdin via heredoc** to avoid shell-quoting issues.
+- **Stdin must be a pipe** — dimcode rejects heredocs and `< file` redirects with `Error: stdin is empty`; prompts are piped (`cat promptfile | dimcode exec`).
 
 ## Not implemented (add when needed)
 

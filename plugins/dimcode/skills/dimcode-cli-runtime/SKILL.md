@@ -12,28 +12,32 @@ Use this skill only inside the `dimcode:dimcode-rescue` subagent and the `dimcod
 
 Always run dimcode from the repository root (dimcode sessions are scoped to the working directory — `dimcode session list` only shows sessions started in the current cwd).
 
-Fresh task — pass the prompt on stdin via a quoted heredoc. Never inline the task text as a shell argument; heredoc avoids all quoting and multiline problems:
+Fresh task — pass the prompt on stdin **through a pipe**. dimcode only reads stdin when it is a pipe: heredocs (`<<'EOF'`) and file redirects (`< file`) both fail with `Error: stdin is empty`, because the shell presents those as file descriptors, not pipes. This applies in foreground and background alike.
+
+For a short single-line prompt:
 
 ```bash
-dimcode exec <<'DIMCODE_TASK'
-<task text here>
-DIMCODE_TASK
+printf '%s' 'task text here' | dimcode exec
 ```
+
+For anything multiline or containing quotes, write the prompt to a temp file with the Write tool first, then pipe it:
+
+```bash
+cat /path/to/prompt.txt | dimcode exec
+```
+
+This `Write + cat |` form is also the only reliable way to run dimcode with `run_in_background: true`.
 
 Resume the most recent session in this repository:
 
 ```bash
-dimcode exec resume --last <<'DIMCODE_TASK'
-<follow-up text here>
-DIMCODE_TASK
+cat /path/to/prompt.txt | dimcode exec resume --last
 ```
 
 Resume a specific session:
 
 ```bash
-dimcode exec resume <session-id> <<'DIMCODE_TASK'
-<follow-up text here>
-DIMCODE_TASK
+cat /path/to/prompt.txt | dimcode exec resume <session-id>
 ```
 
 ## Stale-lock recovery (known dimcode quirk, v0.2.21)

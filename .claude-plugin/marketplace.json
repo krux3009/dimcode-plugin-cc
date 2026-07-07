@@ -5,13 +5,13 @@
   },
   "metadata": {
     "description": "DimCode plugin for Claude Code: delegate coding tasks and run code reviews through the local dimcode CLI.",
-    "version": "0.2.1"
+    "version": "0.2.2"
   },
   "plugins": [
     {
       "name": "dimcode",
       "description": "Use DimCode from Claude Code to review code or delegate tasks.",
-      "version": "0.2.1",
+      "version": "0.2.2",
       "author": {
         "name": "Li Xuan"
       },
